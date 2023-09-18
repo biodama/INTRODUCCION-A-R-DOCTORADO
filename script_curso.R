@@ -92,8 +92,8 @@ length(y)
 class(datosGEN)
 dim(datosGEN) # el equivalente a length de un vector
 
-str(datosGEN)
-names(datosGEN)
+str(datosGEN)  # Cuidado con bases de datos muy grandes
+names(datosGEN)# Cuidado con bases de datos muy grandes
 
 
 
