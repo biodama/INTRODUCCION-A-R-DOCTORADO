@@ -110,6 +110,155 @@ class(var_num)
 
 Var_num<-c("holaaaaaa")
 
+#########################
+# Data frame
+#########################
+
+# Cargo workspace
+
+ls()
+
+load("C:\\Users\\usuario\\Desktop\\datos.curso1.RData")
+
+ls()
+
+
+class(datos)
+dim(datos)
+
+str(datos)
+
+
+fix(datos) # Cuidado que puedo modificar los datos sin que quede constancia
+
+View(datos) # La mas recomendable de lo malo
+
+head(datos,n=10)
+head(datos,n=6)
+?head
+
+tail(datos,n=10)
+
+
+# Acceso a elementos
+
+
+datos$"edad"
+
+datos$"estado.civil"
+
+
+datos$"edad"[ c(1,6) ]
+
+datos[ FILAS , COLUMNAS ]
+
+datos_new <- datos[  c(1,6)  ,  c(2)  ]
+
+datos_new2 <- datos[  , c(2,3) ]
+
+datos_new3 <- datos[  , c(3,2) ]
+
+datos_new4 <- datos[  , c("edad","sexo") ]
+
+
+# Vector de indices(posiciones), vector lógico, condición lógica sobre otros vectores (variables), etc
+
+datos[ FILAS , COLUMNAS ]
+
+table(datos$"sexo")
+
+datos.mujer <- datos [datos$"sexo"=="Mujer" , c("ID","sexo","peso","altura")  ]
+
+
+datos.mujer1 <- datos [datos$"sexo"=="Mujer" ,  ]
+
+datos.mujer2 <- datos.mujer1[ datos.mujer1$"estado.civil"=="Casado" ,  ]
+
+
+datos.mujer.final <- datos [datos$"sexo"=="Mujer" & datos$"estado.civil"=="Casado" ,   ]
+
+datos_hombres_jovenes<- datos[datos$"sexo"=="Hombre" & datos$"edad"<=40 , ]
+
+
+
+# Recodificaciones
+
+datos.curso <- datos
+
+datos.curso[1 , 3] <- "Hombre"
+
+datos.curso[datos.curso$"ID"==200 , c("sexo") ] <- "Mujer"
+
+
+# Anadir variables
+
+datos$"edad"
+datos[ , c(2)]
+datos[ , c("edad")]
+
+
+datos$"edad_new" <- datos$"edad"/2
+
+datos$"edad_new" <- datos[ , c("edad")]/2
+
+datos$"juventud" <- datos$"edad"<=50
+
+datos$ID_labo<- c(1)
+
+# Eliminar registos y/o variables
+
+datos_reducido<-datos[-c(1,2),-c(2,4)]
+
+
+# Sustituir el valor de "Mujer" por "M" en la variable Sexo
+
+datos$"sexo"[datos$"sexo"=="Mujer"] <- "M"
+
+datos[datos$"sexo"=="Mujer" ,  c("sexo")] <- "M"
+
+
+
+
+
+attach # peligros y un poco sucio
+
+
+################################
+# IMPORTACION
+################################
+
+
+# Nos da en que directorio estoy
+getwd()
+
+# Establece el directorio de trabajo.
+setwd("")
+
+
+# Establezco el setwd en la carpeta que contiene los fichero a importar
+setwd("C:\\Users\\FGM\\Desktop\\INTRODUCCION-A-R-DOCTORADO-main\\datos\\")
+tabla<-read.table("datos.curso1.txt", header=TRUE, sep="\t")
+
+
+# Importando base de datos con ruta absoluta
+tabla<-read.table(file="C:/Users/FGM/Desktop/INTRODUCCION-A-R-DOCTORADO-main/datos/datos.curso1.txt", header=TRUE, sep="\t")
+
+# Importando base de datos con ruta relativa desde un directorio superio 
+
+tabla<-read.table(file="datos/datos.curso1.txt", header=TRUE, sep="\t")
+
+
+#Importa base de datos, "" y \t lo interpreta como tabulación
+
+tabla<-read.table("datos/datos.curso1.txt", header=TRUE, sep="")
+tabla<-read.table("datos/datos.curso1.txt", header=TRUE, sep="\t")
+
+#Importación cambiando el argumento stringsAsFactor para que las variables la importe de tipo factor
+tabla<-read.table("datos/datos.curso1.txt", header=TRUE, sep="\t", stringsAsFactors=TRUE)
+
+#Importación sin variable tipo factor
+tabla<-read.table("datos/datos.curso1.txt", header=TRUE, sep="", stringsAsFactors=F)
+
 
 
 
