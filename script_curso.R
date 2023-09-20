@@ -192,9 +192,17 @@ datos.curso[datos.curso$"ID"==200 , c("sexo") ] <- "Mujer"
 
 # Anadir variables
 
+
+
 datos$"edad"
+
 datos[ , c(2)]
+
+
+
 datos[ , c("edad")]
+
+
 
 
 datos$"edad_new" <- datos$"edad"/2
@@ -205,6 +213,7 @@ datos$"juventud" <- datos$"edad"<=50
 
 datos$ID_labo<- c(1)
 
+
 # Eliminar registos y/o variables
 
 datos_reducido<-datos[-c(1,2),-c(2,4)]
@@ -214,8 +223,16 @@ datos_reducido<-datos[-c(1,2),-c(2,4)]
 
 datos$"sexo"[datos$"sexo"=="Mujer"] <- "M"
 
+datos$"sexo"[datos$"sexo"=="Mujer" & datos$"edad">=50] <- "mayores_m"
+
+
 datos[datos$"sexo"=="Mujer" ,  c("sexo")] <- "M"
 
+
+
+datos$"sexo_new"<-NA
+
+datos$"sexo_new"[datos$"sexo"=="Mujer" & datos$"edad">=50] <- "mayores_m"
 
 
 
@@ -258,6 +275,220 @@ tabla<-read.table("datos/datos.curso1.txt", header=TRUE, sep="\t", stringsAsFact
 
 #Importación sin variable tipo factor
 tabla<-read.table("datos/datos.curso1.txt", header=TRUE, sep="", stringsAsFactors=F)
+
+
+library("openxlsx")
+
+datos <- read.xlsx("C:/Users/usuario/Desktop/INTRODUCCION-A-R-DOCTORADO-main/datos/datos.curso1.xlsx")
+
+
+install.packages("readxl")
+
+library("readxl")
+
+datos2<-read_xlsx("C:/Users/usuario/Desktop/INTRODUCCION-A-R-DOCTORADO-main/datos/datos.curso1.xlsx")
+
+
+# names y row.names de un data.frame
+
+names(datos)[c(2)] <- c("age")
+
+names(datos)[c(2,3,4)] <- c("age","sex","civil_status")
+
+
+names(datos)[ which(   names(datos)==c("fumador")   )] <- "smoker"        
+
+
+datos$"sexo"[datos$"sexo"=="Mujer"]
+datos$"sexo"[which(datos$"sexo"=="Mujer")] <- "M"
+
+
+row.names(datos)<-NULL
+
+
+# Operaciones aritmeticas
+
+
+datos$"silvia"<- c(datos$"peso"^2) / c(datos$"edad gr"/2)
+
+
+
+# Operaciones logicas
+
+
+datos$"sexo"=="Mujer"
+datos$"sexo"!="Hombre"
+
+datos$"sexo"%in%"Mujer" # equivalente al == pero mejor utilizar esto cuando hay missing.
+
+
+datos_hombres_jovenes<- datos[datos$"sexo"=="Hombre" | datos$"edad"<=40 , ]
+
+
+
+# Operaciones de conjuntos
+
+
+intersect(datos$"ID",c(200,2000,137))
+
+setdiff(c(200,2000,137),datos$"ID")
+
+indice <- intersect(datos$"ID",c(200,2000,137))
+
+indice
+
+
+# Secuencias
+
+
+c(1,7,10,5,3)
+
+seq(from = 2, to = 18, by = 2)
+
+rep( 1,10)
+
+dim(datos)
+datos$"ID_seq" <- c(1:200)
+
+datos$"ID_seq" <- seq(from=1,to=200,by=1)
+
+
+# Missing
+
+sum(is.na(datos$"edad"))  
+# which(is.na(datos$"edad"))
+
+datos$"edad"[is.na(datos$"edad")] <-  900
+
+datos$"edad"[which(is.na(datos$"edad"))] <-  900
+
+sum(is.na(datos$"edad"))  
+
+
+datos$"pedro"<-NA
+
+datos$"edad"[c(1)]<-NA
+
+# para variables caracter/categoricas
+sum(is.na(datos$"cancer.prostata"))
+table(datos$"cancer.prostata",exclude=NULL)
+
+
+datos$"cancer.prostata"[is.na(datos$"cancer.prostata")] <- "no se"
+
+table(datos$"cancer.prostata",exclude=NULL)
+
+
+# Ordenacion
+
+
+datos_orden1 <- datos[ order(datos$"edad")    ,    ]
+
+datos_orden2 <- datos[ order(datos$"edad",datos$"peso")    ,    ]
+
+datos_orden3 <- datos[ order(datos$"edad",decreasing=TRUE)    ,    ]
+
+datos_orden4 <- datos[order(datos$"estado.civil") ,  ]
+
+
+# Ejercicios
+
+# 8 sin el apartado d
+# 9
+# 12
+# 14
+# 16
+
+
+table( datos$edad, exclude=NULL     )
+
+mean ( datos$edad   )
+
+read.xlsx ()
+
+vector <- data.frame(  ID=c(1,2,3), edad=c(10,15,23)  )
+
+subbase <- datos[ datos$"edad">=50     ,    c("sexo" ,"edad")         ]
+
+
+variables <- c("sexo","edad")
+
+subbase <- datos[ datos$"edad">=50     ,    variables   ]
+
+
+# PETICIONES FINALES
+
+class(datos$"edad")
+
+datos$"edad"<-as.numeric(datos$"edad")
+
+class(datos$"edad")
+
+sum(is.na(datos$"edad"))
+
+datos$"edad"[is.na(datos$"edad")] <- 999 
+
+sum(is.na(datos$"edad"))
+
+
+
+datos$"edad_curso" <- NA
+
+datos$"edad_curso"[datos$"edad">=40] <-"maduros"
+
+datos$"edad_curso"[datos$"edad"<40] <-"no tan maduros"
+
+head(datos)
+
+table(datos$"edad_curso",exclude=NULL)
+
+
+
+datos_nuevos <- datos[datos$"edad_curso"=="no tan maduros" ,  ]
+dim(datos_nuevos)
+
+
+library("openxlsx")
+
+write.xlsx(x=datos_nuevos,file="datos_nuevos.xlsx")
+
+
+dim(datos)
+datos$"ID_curso" <- seq(from = 1, to = 200 , by = 1)
+
+datos$"ID_curso" <- c(1:length(datos$edad))
+
+1:200
+
+
+
+# Graficos
+
+x <- runif(50, 0, 4)
+y <- runif(50, 0, 4)
+
+
+plot(x, y, main = "Mi primer grafico", 
+sub = "subtítulo",
+xlab = "x label",
+ylab = "y label", xlim = c(-1, 5),
+ylim = c(1, 5))
+abline(h = 2, lty = 1) 
+abline(v = 0, lty = 2)
+text(1, 4, "Algo de texto")
+mtext("mtext", side = 1)
+mtext("mtext en side 2", side = 2, 
+line = -3, cex = 2)
+
+
+par(mfrow = c(2, 2))
+plot(rnorm(10))
+plot(runif(5), rnorm(5))
+plot(runif(10))
+plot(rnorm(10), rnorm(10))
+
+
+
 
 
 
