@@ -138,7 +138,7 @@ datos [ c(2) , c(3) ]
 
 datos[    , c(2)    ]
 
-datos$edad
+datos$"edad"
 
 datos[    , 2 ]
 
@@ -192,12 +192,12 @@ datos [datos$"sexo"%in%"Mujer" & datos$"estado.civil"%in%"Casado" ,1:5 ]
 
 # Lo utizalos para dos cosas principalmente:
 
-# 1) Hacer una sub-base
+# (1) Hacer una sub-base
 
 datos.mujeres <- datos [datos$"sexo"=="Mujer" ,     ]
 
 
-# 2) Recodificacion de valores
+# (2) Recodificacion de valores
 
 datos.new <- datos
 
@@ -238,6 +238,11 @@ datos[datos$"nivel.estudios"=="Bajo", 5] <- c("B")
 datos[datos$"nivel.estudios"=="Bajo", c("nivel.estudios")] <- c("B")
 
 
+#######################################################################
+#######################################################################
+#######################################################################
+#######################################################################
+
 
 # AÑADIR VARIABLES
 
@@ -264,10 +269,11 @@ datos_union <- rbind( datos, datos_para_unir)
 datos.new <- datos[-c(1,2,3) , -c(2) ]
 
 
-# Nombres de las variables de un data.frame
+# Nombres de las variables de un data.frame (recodificar)
 
 
 names(datos) [  c(1,3)  ] <- c("ID_new","Sex")
+
 
 
 # Nombres de filas
@@ -278,6 +284,206 @@ datos_new<-datos[c(4,1,7) ,   ]
 
 row.names(datos_new) <- NULL
  
+ 
+ #####################################
+ #####################################
+ #####################################
+ 
+ # Carga de un workspace
+
+ setwd("/Users/pfernandezn/Desktop/INTRO.R/datos/")
+
+ load("datos.curso1.RData")
+ 
+ 
+ # Operaciones aritmeticas
+ 
+ # datos$"valor" <- NA
+ 
+datos$"valor" <-  c(datos$"peso"^2) / c(datos$"edad"/2)
+ 
+ # c(59.58221^2) / c(37/2)
+ 
+ datos$"edad.2" <- datos$edad*2
+  
+ 
+ # <, >, <=, >=, ==, !=  # todos son sensibles a lo de los missing!!!!!!!!!!
+
+# & (y), |(o)
+
+datos$"edad"
+
+datos$"edad.gr" <- datos$"edad"
+
+datos[datos$"edad">=60 , "edad.gr" ] <- "mayores"
+datos[datos$"edad"<60 , "edad.gr" ] <- "menores"
+
+# datos[datos$"edad">=60 , 14 ] en mi caso ocupa la columna 14
+
+datos_mayores <- datos[datos$"edad.gr"=="mayores" , ]
+datos_mayores <- datos[datos$"edad">=60 , ]
+
+
+# Operaciones de conjuntos
+
+intersect(datos$"ID",c(200,2000,137)) # cuales son los comunes
+
+setdiff(c(200,2000,137),datos$"ID")
+
+# Secuencias
+
+sample(20)
+
+# seq
+
+seq(from=1,to=10,by=1)
+
+seq(from = 2, to = 18, by = 2)
+
+# rep
+
+c(rep(1,10), rep(2,10))
+
+# opcion vectorial
+
+c(1,2,3,4)
+
+c(1:4)
+
+c(1:4, 10:20)
+
+seq(from=1,to=4,by=1)
+
+dim(datos)
+datos$"ID_seq" <- c(1:200)
+
+
+# Missing (identificarlos y recodificarlos) NA
+
+class(datos$"edad")
+
+sum(is.na(datos$edad))
+
+datos$edad==NA # ESTO NO SE PUEDE!!!!!!!!!!!!!!!!!!!!!!!!!
+
+is.na(datos$edad)
+
+which(is.na(datos$edad)) # la posicion (fila) que tiene missing
+
+datos[is.na(datos$edad) ,   2] <- 90  # la edad ocupa la columna 2
+
+
+##############################################################
+class(datos$nivel.estudios)
+sum(is.na(datos$nivel.estudios))
+table(datos$nivel.estudios , exclude=NULL) # para variables caracter o categórica
+
+table(datos$"cancer.prostata",exclude=NULL)
+table(datos$"cancer.prostata",datos$"sexo",exclude=NULL)
+
+# Ordenacion
+
+datos[c(102 ,175),]
+
+datos[ order(datos$"edad")    ,    ]
+
+datos_orden1 <- datos[ order(datos$"edad")    ,    ]
+
+datos_orden2 <- datos[ order(datos$"edad",datos$"peso")    ,    ]
+
+table(datos$"estado.civil")
+class(datos$"estado.civil")
+
+datos_orden3 <- datos[order(datos$"estado.civil") ,  ]
+
+
+my.data.frame.1<-data.frame(ID=c("paciente1","paciente2","paciente3"),edad=c(10,25,33),altura=c(NA,150,180),cancer=c(TRUE,TRUE,FALSE),bmi=c(22,25,20))
+stringsAsFactors=FALSE)
+
+
+
+
+
+
+my.data.frame$altura[is.na(my.data.frame$altura)]<-192
+
+
+
+
+
+my.data.frame.new<-my.data.frame[my.data.frame$altura>160,]
+
+
+my.data.frame$ratio<-my.data.frame$altura/my.data.frame$bmi
+
+
+data.frame.unir<-data.frame(ID="paciente4",edad=45,altura=160,cancer=T,bmi=30,stringsAsFactors=FALSE)
+
+
+
+my.data.frame<-rbind(my.data.frame.1,data.frame.unir)
+
+
+
+s<-c("A","H","J","A")
+d<-c("A","R","Q","E")
+
+intersect(s,d)
+setdiff(s,d)
+setdiff(d,s)
+
+muestra<-sample(1:1000,10)
+
+
+normal<-rnorm(100)
+
+
+secuencia<-seq(1,18,2)
+
+repeticion<-rep(5,15)
+
+seq(from=1,to=18,by=2)
+
+t<-c(NA,1,4,1,5,NA,2,7)
+
+which(is.na(t))
+#############################################################
+
+sum(is.na(datos$cancer.mama))
+
+datos$"cancer.mama"[is.na(datos$"cancer.mama")]<-"Desconocido"
+
+table(datos$cancer.mama,exclude=NULL)
+
+
+table(datos$estado.civil,exclude=NULL)
+
+
+datos$"cancer.mama"[datos$"cancer.mama"%in%"Desconocido"]<-"Sin info"
+
+datos$"cancer.mama"[datos$"cancer.mama"=="Desconocido"]<-"Sin info"
+
+
+
+intersect(datos$edad,c(37,38,49,60,85,89,200))
+
+
+
+#############################################################
+# EXPORTAR
+write.table(x=airquality,file="/Users/pfernandezn/Desktop/INTRO.R/fichero1.txt", sep=";")
+
+write.table(x=airquality,file="/Users/pfernandezn/Desktop/INTRO.R/fichero1.txt", sep="\t", row.names=FALSE, quote=FALSE)
+
+write.table(x=airquality,file=" fichero1.txt", sep="|", row.names=FALSE)
+
+#Importar objeto u objetos de un RData
+load("/Users/pfernandezn/Desktop/INTRO.R/datos/datos.curso1.RData")
+
+#Exportar en txt
+write.table(x=datos.curso1,file="/Users/pfernandezn/Desktop/INTRO.R/datos.curso.exportado.txt", sep = "\t")
+
+
 
 
 
